@@ -1,7 +1,7 @@
 <?php
 	class MarcaModel{
 		//PROPIEDADES
-		public $id, $user, $password, $nombre, $privilegio=100, $admin=0, $email, $imagen='', $fecha;
+		public $idmarca, $user, $password, $nombre, $privilegio=100, $admin=0, $email, $imagen='', $fecha;
 			
 		//METODOS
 		//guarda el usuario en la BDD
