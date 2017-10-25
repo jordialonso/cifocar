@@ -1,6 +1,6 @@
 <?php
 	class UsuarioModel{
-		//PROPIEDADES estamos provando 
+		//PROPIEDADES estamos provando jhdIHUI
 		public $id, $user, $password, $nombre, $privilegio=100, $admin=0, $email, $imagen='', $fecha;
 			
 		//METODOS
