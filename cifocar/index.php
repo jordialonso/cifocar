@@ -1,4 +1,4 @@
-<?php h
+<?php 
 	//flag para controlar que se accede mediante el index
 	$index_access = true;
 	
