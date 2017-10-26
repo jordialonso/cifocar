@@ -1,6 +1,6 @@
 <?php
 	class MarcaModel{
-		//PROPIEDADES
+		//PROPIEDADES DE LA MARCA
 		public $idmarca, $user, $password, $nombre, $privilegio=100, $admin=0, $email, $imagen='', $fecha;
 			
 		//METODOS
@@ -12,6 +12,7 @@
 				
 			return Database::get()->query($consulta);
 		}
+		
 		
 		
 		//actualiza los datos del usuario en la BDD
