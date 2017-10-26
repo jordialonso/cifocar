@@ -13,27 +13,32 @@ class Vehiculo extends Controller{
             $datos = array();
             $datos['usuario'] = Login::getUsuario();
             $datos['max_image_size'] = Config::get()->user_image_max_size;
-            $this->load_view('view/usuarios/registro.php', $datos);
+            $this->load_view('view/vehiculos/registro.php', $datos);
             
             //si llegan los datos por POST
         }else{
             //crear una instancia de Usuario
-            $u = new UsuarioModel();
+            $vehiculo = new VehiculoModel();
             $conexion = Database::get();
             
             //tomar los datos que vienen por POST
             //real_escape_string evita las SQL Injections
-            $u->user = $conexion->real_escape_string($_POST['user']);
-            $u->password = MD5($conexion->real_escape_string($_POST['password']));
-            $u->nombre = $conexion->real_escape_string($_POST['nombre']);
-            $u->email = $conexion->real_escape_string($_POST['email']);
-            $u->imagen = Config::get()->default_user_image;
+            $vehiculo->matricula = $conexion->real_escape_string($_POST['matricula']);
+            $vehiculo->modelo = MD5($conexion->real_escape_string($_POST['modelo']));
+            $vehiculo->color = $conexion->real_escape_string($_POST['color']);
+            $vehiculo->precio_venta = $conexion->real_escape_string($_POST['precio_venta']);
+            $vehiculo->kms = $conexion->real_escape_string($_POST['kms']);
+            $vehiculo->caballos = $conexion->real_escape_string($_POST['caballos']);
+            $vehiculo->estado = $conexion->real_escape_string($_POST['estado']);
+            $vehiculo->any_matriculacion = $conexion->real_escape_string($_POST['any_matriculacion']);
+            $vehiculo->detalles = $conexion->real_escape_string($_POST['detalles']);
+            $vehiculo->imagen = Config::get()->default_vehiculo_image;
             
             //recuperar y guardar la imagen (solamente si ha sido enviada)
             if($_FILES['imagen']['error']!=4){
                 //el directorio y el tam_maximo se configuran en el fichero config.php
-                $dir = Config::get()->user_image_directory;
-                $tam = Config::get()->user_image_max_size;
+                $dir = Config::get()->vehiculo_image_directory;
+                $tam = Config::get()->image_max_size;
                 
                 $upload = new Upload($_FILES['imagen'], $dir, $tam);
                 $u->imagen = $upload->upload_image();

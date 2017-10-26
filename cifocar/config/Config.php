@@ -25,9 +25,17 @@
 		
 		//OPCIONES PARA LAS IMAGENES
 		private $image_not_found = 'images/no_image.png'; //imagen no encontrada
+		
+		//para usuario
 		private $user_image_directory = 'images/users/';	//directorio para las imágenes de usuario
 		private $default_user_image = 'images/users/user.png'; //imagen por defecto para usuarios
 		private $user_image_max_size = 512000; //tamaño máx imágenes de usuario
+		
+		//para vehiculo
+		private $vehiculo_image_directory = 'images/vehiculos/';	//directorio para las imágenes de usuario
+		private $default_vehiculo_image = 'images/vehiculos/vehiculo.png'; //imagen por defecto para usuarios
+		
+		private $image_max_size = 512000; //tamaño máx imágenes de usuario
 		
 		//-----------------------------------------------------------------------------
 
