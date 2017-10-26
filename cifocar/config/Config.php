@@ -9,11 +9,12 @@
 		
 		//PARA LA BDD		
 		private $db_host = 'localhost'; 	//ubicación de la BDD
-		private $db_user = 'cifo';			//usuario
-		private $db_pass = 'cifocar';			//password
+		private $db_user = 'root';			//usuario
+		private $db_pass = '';			//password
 		private $db_name = 'cifocar';		//nombre de la BDD
 		private $db_charset = 'utf8';	//codificación a utilizar
 		private $db_user_table = 'usuarios'; //nombre para la tabla de usuarios
+		private $db_vehiculo_table = 'vehiculos'; //nombre para la tabla de usuarios
 
 		//CONTROLADOR Y OPERACION POR DEFECTO
 		private $default_controller = 'Welcome'; //controlador por defecto
