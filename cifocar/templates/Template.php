@@ -53,6 +53,9 @@
 					<li><a href="index.php?controlador=Vehiculo&operacion=nuevo">Nuevo Vehículo</a></li>
 					<li><a href="index.php?controlador=Marcas">Marcas</a></li>
 				</ul>
+				<ul class="menu">
+					<li><a href="index.php?controlador=Marcas&operacion=nuevo">Nueva marca</a></li>
+				</ul>
 				<?php 
 				//pone el menú del administrador
 				if($usuario && $usuario->admin){	?>
