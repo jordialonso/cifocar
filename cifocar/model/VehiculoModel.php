@@ -7,10 +7,11 @@ class VehiculoModel{
     //guarda el usuario en la BDD
     public function guardar(){
         $vehiculo_table = Config::get()->db_vehiculo_table;
-        $consulta = "INSERT INTO $vehiculo_table(matricula, modelo, color, precio_venta, kms, caballos, estado, any_matriculacion, detalles, imagen)
-			VALUES ('$this->matricula','$this->modelo','$this->color','$this->precio_venta','$this->kms','$this->caballos', '$this->any_matriculacio','$this->detalles','$this->imagen');";
-        
-        return Database::get()->query($consulta);
+        $consulta = "INSERT INTO $vehiculo_table (matricula, modelo, color, precio_venta, kms, caballos, estado, any_matriculacion, detalles, imagen)
+			VALUES ('$this->matricula','$this->modelo','$this->color',$this->precio_venta,$this->kms,$this->caballos, $this->estado, $this->any_matriculacion,'$this->detalles','$this->imagen');";
+        echo $consulta;
+         Database::get()->query($consulta);
+        echo Database::get()->error;
     }
     
     
@@ -23,11 +24,11 @@ class VehiculoModel{
 							  		color='$this->color',
 							  		precio_venta='$this->precio_venta',
                                     precio_compra='$this->precio_compra',
-                                    kms='$this->kms',
-							  		caballos='$this->caballos',
+                                    kms=$this->kms,
+							  		caballos=$this->caballos,
                                     fecha_venta='$this->fecha_venta',
-							  		estado='$this->estado',
-							  		any_matriculacion='$this->any_matriculacion'
+							  		estado=$this->estado,
+							  		any_matriculacion=$this->any_matriculacion,
                                     detalles='$this->detalles',
 							  		imagen='$this->imagen'					  		
 							  WHERE id='$this->id';";

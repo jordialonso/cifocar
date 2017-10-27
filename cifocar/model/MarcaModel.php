@@ -60,6 +60,21 @@
 			$resultado->free();
 			
 			return $us;
-		}	
+		}
+		
+		public static function actualizar($mnew, $mold){
+		    $consulta = "UPDATE marcas SET marca='$mnew' WHERE marca='$mold';";
+		    return Database::get()->query($consulta);
+		} 
+		
+		public static function getMarcas(){
+		    $consulta = "SELECT * from marcas;";
+		    $resultado = Database::get()->query($consulta);
+		    
+		    $us = $resultado->fetch_object('UsuarioModel');
+		    $resultado->free();
+		    
+		    return $us;
+		} 
 	}
 ?>
