@@ -1,80 +1,57 @@
 <?php
 	class MarcaModel{
 		//PROPIEDADES DE LA MARCA
-		public $idmarca, $user, $password, $nombre, $privilegio=100, $admin=0, $email, $imagen='', $fecha;
-			
+		public $marca;
+		
 		//METODOS
 		//guarda el usuario en la BDD
-		public function guardar(){
-			$user_table = Config::get()->db_user_table;
-			$consulta = "INSERT INTO $user_table(user, password, nombre, privilegio, admin, email, imagen)
-			VALUES ('$this->user','$this->password','$this->nombre',100,0,'$this->email', '$this->imagen');";
-				
+		public static function guardar($marca){
+			$marca_table = Config::get()->db_marca_table;
+			$consulta = "INSERT INTO $marca_table VALUES ('$marca');";
 			return Database::get()->query($consulta);
 		}
 		
 		
 		
 		//actualiza los datos del usuario en la BDD
-		public function actualizar(){
-			$user_table = Config::get()->db_user_table;
-			$consulta = "UPDATE $user_table
-							  SET password='$this->password', 
-							  		nombre='$this->nombre', 
-							  		email='$this->email', 
-							  		imagen='$this->imagen'
-							  WHERE user='$this->user';";
-			return Database::get()->query($consulta);
-		}
-		
-		
-		//elimina el usuario de la BDD
-		public function borrar(){
-			$user_table = Config::get()->db_user_table;
-			$consulta = "DELETE FROM $user_table WHERE user='$this->user';";
-			return Database::get()->query($consulta);
-		}
-		
-		
-		
-		//este método sirve para comprobar user y password (en la BDD)
-		public static function validar($u, $p){
-			$user_table = Config::get()->db_user_table;
-			$consulta = "SELECT * FROM $user_table WHERE user='$u' AND password='$p';";
-			$resultado = Database::get()->query($consulta);
-			
-			//si hay algun usuario retornar true sino false
-			$r = $resultado->num_rows;
-			$resultado->free(); //libera el recurso resultset
-			return $r;
-		}
-		
-		//este método debería retornar un usuario creado con los datos 
-		//de la BDD (o NULL si no existe), a partir de un nombre de usuario
-		public static function getUsuario($u){
-			$user_table = Config::get()->db_user_table;
-			$consulta = "SELECT * FROM $user_table WHERE user='$u';";
-			$resultado = Database::get()->query($consulta);
-			
-			$us = $resultado->fetch_object('UsuarioModel');
-			$resultado->free();
-			
-			return $us;
-		}
-		
 		public static function actualizar($mnew, $mold){
-		    $consulta = "UPDATE marcas SET marca='$mnew' WHERE marca='$mold';";
-		    return Database::get()->query($consulta);
-		} 
-		
-		public static function getMarcas(){
-		    $consulta = "SELECT * from marcas;";
+			$marca_table = Config::get()->db_marca_table;
+			$consulta = "UPDATE $marca_table 
+                         SET marca='$mnew' WHERE marca='$mold';";
+			Database::get()->query($consulta);
+			
+			//retornar número de filas afectadas
+			return Database::get()->affected_rows;
+		}
+			
+		//elimina el usuario de la BDD
+		public static function borrar($marca){
+			$marca_table = Config::get()->db_marca_table;
+			$consulta = "DELETE FROM $marca_table WHERE marca='$marca';";
+			return Database::get()->query($consulta);
+		}
+				
+		// $l es limit, $o es offset
+		public static function getMarcas($l=10, $o=0, $texto='', $sentido='ASC'){
+		    $marca_table = Config::get()->db_marca_table;
+		    $consulta = "SELECT marca FROM $marca_table
+		                 WHERE marca LIKE '%$texto%' 
+                         ORDER BY marca $sentido
+		                 LIMIT $l OFFSET $o;";
+		    
 		    $resultado = Database::get()->query($consulta);
+		
+		    //prepara la lista con los resultados
+		    $lista=array();
 		    
-		    $us = $resultado->fetch_object('UsuarioModel');
+		    //rellenar la lista con los resultados
+		    while($marca = $resultado->fetch_object('MarcaModel'))
+		        $lista[] = $marca;
+		    
 		    $resultado->free();
-		    
-		    return $us;
+		    //var_dump($lista);
+		    return $lista;
 		} 
-	}
+	
+	}	
 ?>

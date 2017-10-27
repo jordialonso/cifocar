@@ -22,12 +22,19 @@
 		<section id="content">
 			<h2>Formulario de registro</h2>
 			
-			<select name="marca">
-						
-			</select>
-			
 			<form method="post" enctype="multipart/form-data" autocomplete="off">
-				<input type="text" name="marca" required="required" /><br/>
+				
+				<label>Marca:</label>
+				<select name="marca">
+    			<?php $this->load('model/MarcaModel.php');
+    						$marcas = MarcaModel::getMarcas(10,0,'','ASC');
+    					       
+    						foreach($marcas as $marca){
+    						   // echo $m->marca;
+    						    echo "<option value='$marca->marca'>$marca->marca</option>";
+    						}
+    			?>
+    			</select><br/>
 			
 				<label>Matricula:</label>
 				<input type="text" name="matricula" required="required" /><br/>
@@ -38,7 +45,7 @@
 				<label>Color:</label>
 				<input type="text" name="color" required="required"/><br/>
 				
-				<label>Precio_venta:</label>
+				<label>Precio venta:</label>
 				<input type="text" name="precio_venta" required="required"/><br/>
 				
 				<label>Kms:</label>

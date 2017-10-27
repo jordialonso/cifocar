@@ -15,7 +15,8 @@
 		private $db_charset = 'utf8';	//codificación a utilizar
 		private $db_user_table = 'usuarios'; //nombre para la tabla de usuarios
 		private $db_vehiculo_table = 'vehiculos'; //nombre para la tabla de usuarios
-
+		private $db_marca_table = 'marcas'; 
+		
 		//CONTROLADOR Y OPERACION POR DEFECTO
 		private $default_controller = 'Welcome'; //controlador por defecto
 		private $default_method = 'index';		//método por defecto

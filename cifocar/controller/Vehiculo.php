@@ -37,6 +37,9 @@ class Vehiculo extends Controller{
             $vehiculo->any_matriculacion = $conexion->real_escape_string($_POST['any_matriculacion']);
             $vehiculo->detalles = $conexion->real_escape_string($_POST['detalles']);
             $vehiculo->imagen = Config::get()->default_vehiculo_image;
+            $vehiculo->vendedor = $conexion->real_escape_string($_POST['vendedor']);
+            $vehiculo->marca = $conexion->real_escape_string($_POST['marca']);
+            
             
             //recuperar y guardar la imagen (solamente si ha sido enviada)
             if($_FILES['imagen']['error']!=4){
@@ -48,17 +51,15 @@ class Vehiculo extends Controller{
                 $vehiculo->imagen = $upload->upload_image();
             }
             
-            $a = $vehiculo->guardar();
-            
             //guardar el usuario en BDD
-//             if(!$vehiculo->guardar())
-//                 throw new Exception('No se pudo introducir el vehículo');
+            if(!$vehiculo->guardar())
+                throw new Exception('No se pudo introducir el vehículo');
                 
             //mostrar la vista de éxito
             $datos = array();
             $datos['usuario'] = Login::getUsuario();
             $datos['mensaje'] = 'Operación de registro completada con éxito';
-         //   $this->load_view('view/exito.php', $datos);
+            $this->load_view('view/exito.php', $datos);
         }
     }
     

@@ -1,17 +1,17 @@
 <?php
 class VehiculoModel{
     //PROPIEDADES
-    public $id, $matricula, $modelo, $color, $precio_venta, $precio_compra, $kms, $caballos, $fecha_venta, $estado, $any_matriculacion, $detalles, $imagen;
+    public $id, $matricula, $modelo, $color, $precio_venta, $precio_compra, $kms, $caballos, $fecha_venta, $estado, $any_matriculacion, $detalles, $imagen, $vendedor, $marca;
  
     //METODOS
     //guarda el usuario en la BDD
     public function guardar(){
         $vehiculo_table = Config::get()->db_vehiculo_table;
-        $consulta = "INSERT INTO $vehiculo_table (matricula, modelo, color, precio_venta, kms, caballos, estado, any_matriculacion, detalles, imagen)
-			VALUES ('$this->matricula','$this->modelo','$this->color',$this->precio_venta,$this->kms,$this->caballos, $this->estado, $this->any_matriculacion,'$this->detalles','$this->imagen');";
-        echo $consulta;
-         Database::get()->query($consulta);
-        echo Database::get()->error;
+        $consulta = "INSERT INTO $vehiculo_table (matricula, modelo, color, precio_venta, kms, caballos, estado, any_matriculacion, detalles, imagen, vendedor, marca)
+			VALUES ('$this->matricula','$this->modelo','$this->color',$this->precio_venta,$this->kms,$this->caballos, $this->estado, $this->any_matriculacion,'$this->detalles','$this->imagen','$this->vendedor','$this->marca');";
+      
+        return Database::get()->query($consulta);
+        //echo Database::get()->error;
     }
     
     
