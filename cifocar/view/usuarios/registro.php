@@ -33,6 +33,15 @@
 				<label>Nombre:</label>
 				<input type="text" name="nombre" required="required"/><br/>
 				
+				<label>Privilegio:</label>
+				<select name="privilegio">
+					<option value="0">Admin</option>
+					<option value="1">Admin</option>
+					<option value="2">Admin</option>
+				</select>
+				
+				<input type="checkbox" name="admin"><label>Administrador</label><br/>
+				
 				<label>Email:</label>
 				<input type="email" name="email" required="required"/><br/>
 				
