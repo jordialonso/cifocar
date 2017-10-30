@@ -26,13 +26,10 @@
 				
 				<label>Marca:</label>
 				<select name="marca">
-    			<?php $this->load('model/MarcaModel.php');
-    						$marcas = MarcaModel::getMarcas(10,0,'','ASC');
-    					       
-    						foreach($marcas as $marca){
-    						   // echo $m->marca;
-    						    echo "<option value='$marca->marca'>$marca->marca</option>";
-    						}
+    			<?php        
+					foreach($marcas as $marca){
+					    echo "<option value='$marca->marca'>$marca->marca</option>";
+					}
     			?>
     			</select><br/>
 			

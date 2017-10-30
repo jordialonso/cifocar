@@ -42,5 +42,42 @@ class VehiculoModel{
         $consulta = "DELETE FROM $vehiculo_table WHERE id='$this->id';";
         return Database::get()->query($consulta);
     }
+    
+    public static function getVehiculos($l=0, $o=0, $texto='', $sentido='ASC'){
+        $vehiculo_table = Config::get()->db_vehiculo_table;
+        $consulta = "SELECT * FROM $vehiculo_table
+		                 WHERE id LIKE '%$texto%'
+                         ORDER BY id $sentido";
+        if($l>0)$consulta .= " LIMIT $l";
+        if($o>0)$consulta .= " OFFSET $o";
+        
+        
+        $resultado = Database::get()->query($consulta);
+        
+        //prepara la lista con los resultados
+        $lista=array();
+        
+        //rellenar la lista con los resultados
+        while($vehiculo = $resultado->fetch_object('VehiculoModel'))
+            $lista[] = $vehiculo;
+            
+            $resultado->free();
+            return $lista;
+    } 
+    public static function getVehiculo($id=0){
+        
+        $consulta = "SELECT * FROM vehiculos WHERE id=$id";
+        $conexio = Database::get();
+        $resultat = $conexio->query($consulta);
+        
+        //si no hi ha resultats retorna un null
+        if(!$resultat) return null;
+        
+        $vehiculo = $resultat->fetch_object('VehiculoModel');
+        
+        $resultat->free();
+        
+        return $vehiculo;
+    }  
 }
 ?>

@@ -9,15 +9,14 @@
 			$marca_table = Config::get()->db_marca_table;
 			$consulta = "INSERT INTO $marca_table VALUES ('$marca');";
 			return Database::get()->query($consulta);
-		}
-		
-		
+		}	
 		
 		//actualiza los datos del usuario en la BDD
 		public static function actualizar($mnew, $mold){
 			$marca_table = Config::get()->db_marca_table;
 			$consulta = "UPDATE $marca_table 
                          SET marca='$mnew' WHERE marca='$mold';";
+		
 			Database::get()->query($consulta);
 			
 			//retornar número de filas afectadas
@@ -32,12 +31,14 @@
 		}
 				
 		// $l es limit, $o es offset
-		public static function getMarcas($l=10, $o=0, $texto='', $sentido='ASC'){
+		public static function getMarcas($l=0, $o=0, $texto='', $sentido='ASC'){
 		    $marca_table = Config::get()->db_marca_table;
 		    $consulta = "SELECT marca FROM $marca_table
 		                 WHERE marca LIKE '%$texto%' 
-                         ORDER BY marca $sentido
-		                 LIMIT $l OFFSET $o;";
+                         ORDER BY marca $sentido";
+		    if($l>0)$consulta .= " LIMIT $l";
+		    if($o>0)$consulta .= " OFFSET $o";
+		    
 		    
 		    $resultado = Database::get()->query($consulta);
 		

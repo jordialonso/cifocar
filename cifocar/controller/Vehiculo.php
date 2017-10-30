@@ -16,6 +16,12 @@ class Vehiculo extends Controller{
             $datos = array();
             $datos['usuario'] = Login::getUsuario();
             $datos['max_image_size'] = Config::get()->image_max_size;
+     
+            //mostrar todas las marcas
+            $this->load('model/MarcaModel.php');
+            $marcas = MarcaModel::getMarcas();
+            $datos['marcas']=$marcas;
+            
             $this->load_view('view/vehiculos/nuevo.php', $datos);
             
             //si llegan los datos por POST
@@ -122,38 +128,53 @@ class Vehiculo extends Controller{
     
     //PROCEDIMIENTO PARA DAR DE BAJA UN USUARIO
     //solicita confirmación
-    public function borrar(){
-        
-        if(!Login::getUsuario())
-            throw new Exception('Debes estar identificado.');
+    public function borrar($id=0){
+        $this->load('model/VehiculoModel.php');
+        $vehiculo = VehiculoModel::getVehiculo($id);       
+      
+        //if(!Login::getUsuario())
+        //    throw new Exception('Debes estar identificado.');
         
         //si no nos están enviando la conformación de baja
         if(empty($_POST['confirmar'])){
             //carga el formulario de confirmación
             $datos = array();
-            $datos['usuario'] = $u;
-            $this->load_view('view/vehiculos/borrar.php', $datos);
+            $datos['usuario'] = Login::getUsuario();
+            $datos['vehiculo'] = $vehiculo; 
+            $this->load_view('view/vehiculos/baja.php', $datos);
             
             //si nos están enviando la confirmación de baja
         }else{
-                
+            //$this->load('model/VehiculoModel.php');
+               
                 //de borrar el usuario actual en la BDD
-                if(!$u->borrar())
-                    throw new Exception('No se pudo dar de baja');
-                    
-                    //borra la imagen (solamente en caso que no sea imagen por defecto)
-                    if($u->imagen!=Config::get()->default_user_image)
-                        @unlink($u->imagen);
+                if(!$vehiculo->borrar())
+                    throw new Exception('No se pudo dar de baja');           
                         
-                        //cierra la sesion
-                        Login::log_out();
-                        
-                        //mostrar la vista de éxito
-                        $datos = array();
-                        $datos['usuario'] = null;
-                        $datos['mensaje'] = 'Eliminado OK';
-                        $this->load_view('view/exito.php', $datos);
+                //mostrar la vista de éxito
+                $datos = array();
+                $datos['usuario'] = null;
+                $datos['mensaje'] = 'Eliminado OK';
+                $this->load_view('view/exito.php', $datos);
         }
+    }
+    
+    public function listar(){
+        
+        // if(!Login::getUsuario())
+        //     throw new Exception('Debes estar identificado.');
+        
+        $this->load('model/VehiculoModel.php');
+        $vehiculos = VehiculoModel::getVehiculos();
+        
+        if(!$vehiculos)
+            throw new Exception('No hay vehículos');
+            
+            $datos = array();
+            $datos['usuario'] = login::getUsuario();
+            $datos['vehiculos'] = $vehiculos;
+            
+            $this->load_view('view/vehiculos/lista.php', $datos);
     }
     
 }

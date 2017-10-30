@@ -49,12 +49,15 @@
 			<nav>
 				<ul class="menu">
 					<li><a href="index.php">Inicio</a></li>
-					<li><a href="index.php?controlador=Usuario&operacion=registro">Registro</a></li>
 					<li><a href="index.php?controlador=Vehiculo&operacion=nuevo">Nuevo Vehículo</a></li>
-					<li><a href="index.php?controlador=Marcas">Marcas</a></li>
+					<li><a href="index.php?controlador=Vehiculo&operacion=listar">Listar Vehículo</a></li>
 				</ul>
 				<ul class="menu">
-					<li><a href="index.php?controlador=Marcas&operacion=nuevo">Nueva marca</a></li>
+					<li><a href="index.php?controlador=Marca&operacion=nuevo">Nueva marca</a></li>
+					<li><a href="index.php?controlador=Marca&operacion=listar">Listar marca</a></li>
+				</ul>
+				<ul class="menu">
+					<li><a href="index.php?controlador=Usuario&operacion=registro">Registro</a></li>
 				</ul>
 				<?php 
 				//pone el menú del administrador
