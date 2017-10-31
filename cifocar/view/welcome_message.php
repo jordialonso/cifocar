@@ -16,6 +16,7 @@
 			if(!$usuario) Template::login(); //pone el formulario de login
 			else Template::logout($usuario); //pone el formulario de logout
 			
+			if($usuario)
 			Template::menu($usuario); //pone el menú
 		?>
 

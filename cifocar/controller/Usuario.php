@@ -26,6 +26,9 @@
 				$u->user = $conexion->real_escape_string($_POST['user']);
 				$u->password = MD5($conexion->real_escape_string($_POST['password']));
 				$u->nombre = $conexion->real_escape_string($_POST['nombre']);
+				$u->privilegio = $conexion->real_escape_string($_POST['privilegio']);
+				
+				$u->admin = isset($_POST['admin'])? 1 : 0;
 				$u->email = $conexion->real_escape_string($_POST['email']);
 				$u->imagen = Config::get()->default_user_image;
 				

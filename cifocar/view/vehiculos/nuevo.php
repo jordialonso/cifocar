@@ -65,7 +65,7 @@
 				<input type="file" accept="image/*" name="imagen" />
 				<span>max <?php echo intval($max_image_size/1024);?>kb</span><br />
 				
-				<input type="text" name="vendedor" required="required" /><br/>
+				<input type="hidden" name="vendedor" value="<?php echo $usuario->id; ?>" /><br/>
 				
 				<input type="submit" name="guardar" value="Guardar"/><br/>
 			</form>

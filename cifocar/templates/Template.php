@@ -34,7 +34,19 @@
 					Hola 
 					<a href="index.php?controlador=Usuario&operacion=modificacion" title="modificar datos">
 						<?php echo $usuario->nombre;?>
-					</a><?php if($usuario->admin) echo ', eres administrador';?>
+					</a>
+					<?php 					           
+			              switch ($usuario->privilegio){
+			                    case 0: echo ', eres administrador';
+			                            break;
+			                    case 1: echo ', eres comprador';
+			                            if($usuario->admin) echo ' (admin)';
+			                            break;
+			                    case 2: echo ', eres vendedor';
+			                            if($usuario->admin) echo ' (admin)';
+			                            break;
+			              }
+					?>
 				</span>
 								
 				<form method="post">
@@ -45,28 +57,29 @@
 		
 		
 		//PONE EL MENU DE LA PAGINA
-		public static function menu($usuario){ ?>
+		public static function menu($usuario){ 
+		    ?>
 			<nav>
+				<?php if ($usuario->privilegio==1){?>
 				<ul class="menu">
 					<li><a href="index.php">Inicio</a></li>
 					<li><a href="index.php?controlador=Vehiculo&operacion=nuevo">Nuevo Vehículo</a></li>
 					<li><a href="index.php?controlador=Vehiculo&operacion=listar">Listar Vehículo</a></li>
-				</ul>
-				<ul class="menu">
 					<li><a href="index.php?controlador=Marca&operacion=nuevo">Nueva marca</a></li>
 					<li><a href="index.php?controlador=Marca&operacion=listar">Listar marca</a></li>
 				</ul>
+				<?php } ?>
+				<?php if ($usuario->privilegio==2){?>
 				<ul class="menu">
+					<li><a href="index.php?controlador=Vehiculo&operacion=listar">Listar Vehículo</a></li>
+				</ul>
+				<?php } ?>
+				<?php if($usuario && $usuario->admin){	?>
+				<ul class="menu">
+					<li><a href="index.php?controlador=Vehiculo&operacion=listar">Listar Vehículo</a></li>
 					<li><a href="index.php?controlador=Usuario&operacion=registro">Registro</a></li>
 				</ul>
-				<?php 
-				//pone el menú del administrador
-				if($usuario && $usuario->admin){	?>
-				<ul class="menu">
-					<li><a href="#">ADMIN</a></li>
-				</ul>
-							
-				<?php }	?>
+				<?php } ?>
 			</nav>
 		<?php }
 		

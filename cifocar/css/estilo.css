@@ -211,6 +211,34 @@ footer a:hover{
 }
 
 .boton{
-	height: 25px;
-	
+	height: 25px;	
 }
+
+.miniatura{
+	height: 130px;
+	width: 200px;
+}
+
+#imagenGrande{
+	position: fixed;
+	top: 20%;
+	left: 20%;
+	width: 800px;
+}
+
+.imagen{
+	position: fixed;
+	width: 60%;
+	height: 60%;
+	z-index: 3;
+}
+	
+.cerrar {
+	position: absolute;
+	z-index: 5;	
+	top:5%;
+	left:92%;
+	width: 25px;
+	height: 25px;	
+	cursor:pointer;
+}	

@@ -85,7 +85,7 @@
 				<span class="mini">max <?php echo intval($max_image_size/1024);?>kb</span><br />
 				
 				<label></label>
-				<input type="submit" name="modificar" value="modificar"/><br/>
+				<input type="submit" name="modificar" value="Modificar"/><br/>
 			</form>
 			
 				

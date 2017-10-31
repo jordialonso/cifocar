@@ -1,7 +1,7 @@
 <?php
 	class UsuarioModel{
 		//PROPIEDADES estamos provando j
-		public $id, $user, $password, $nombre, $privilegio=100, $admin=0, $email, $imagen='', $fecha;
+		public $id, $user, $password, $nombre, $privilegio=0, $admin=0, $email, $imagen='', $fecha;
 			
 		
 		
@@ -10,7 +10,7 @@
 		public function guardar(){
 			$user_table = Config::get()->db_user_table;
 			$consulta = "INSERT INTO $user_table(user, password, nombre, privilegio, admin, email, imagen)
-			VALUES ('$this->user','$this->password','$this->nombre',100,0,'$this->email', '$this->imagen');";
+			VALUES ('$this->user','$this->password','$this->nombre','$this->privilegio','$this->admin','$this->email', '$this->imagen');";
 				
 			return Database::get()->query($consulta);
 		}

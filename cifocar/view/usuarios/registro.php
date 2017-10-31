@@ -36,11 +36,11 @@
 				<label>Privilegio:</label>
 				<select name="privilegio">
 					<option value="0">Admin</option>
-					<option value="1">Admin</option>
-					<option value="2">Admin</option>
+					<option value="1">Comprador</option>
+					<option value="2">Vendedor</option>
 				</select>
 				
-				<input type="checkbox" name="admin"><label>Administrador</label><br/>
+				<input type="checkbox" name="admin" value="0"><label>Administrador</label><br/>
 				
 				<label>Email:</label>
 				<input type="email" name="email" required="required"/><br/>
