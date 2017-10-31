@@ -120,7 +120,7 @@ class Marca extends Controller{
            throw new Exception('No hay marcas');
 
         $datos = array();
-        $datos['usuario'] = login::getUsuario();
+        $datos['usuario'] = Login::getUsuario();
         $datos['marcas'] = $marcas;
 
         $this->load_view('view/marcas/lista.php', $datos);

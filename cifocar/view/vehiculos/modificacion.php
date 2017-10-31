@@ -20,10 +20,6 @@
 		?>
 		
 		<section id="content">
-			<a class="derecha" href="index.php?controlador=Vehiculo&operacion=baja">
-				<img src="images/buttons/delete.png" alt="darse de baja" class="logo" />
-				Darse de baja
-			</a>
 			
 			<h2>Formulario de modificación de datos</h2>
 			
@@ -31,13 +27,21 @@
 				
 				<figure>
 					<img class="imagenactual" src="<?php echo $vehiculo->imagen;?>" 
-						alt="<?php echo  $usuario->user;?>" />
+						alt="<?php echo $vehiculo->imagen; ?>" />
 				</figure>
-				
+				<input type="hidden" name="id" value="<?php echo $vehiculo->id;?>" />
 				
 				<label>Marca:</label>
-				<input type="text" name="marca" required="required" 
-					 value="<?php echo $vehiculo->marca;?>" /><br/>
+				<select name="marca"> 
+				<?php       
+					foreach($marcas as $marca){
+					    if ($marca->marca != $vehiculo->marca) 
+					       echo "<option value='<?php echo $marca->marca; ?>' >$marca->marca</option>";
+					    else
+					        echo "<option value='<?php echo $marca->marca; ?>' selected='selected'>$marca->marca</option>";
+					}
+				?>	 
+				</select><br/>
 				
 				<label>Matricula:</label>
 				<input type="text" name="matricula" required="required" 
@@ -46,6 +50,10 @@
 				<label>Modelo:</label>
 				<input type="text" name="modelo" required="required" 
 					value="<?php echo $vehiculo->modelo;?>" /><br/>
+					
+				<label>Color:</label>
+				<input type="text" name="color" required="required" 
+					value="<?php echo $vehiculo->color;?>" /><br/>	
 				
 				<label>Precio venta:</label>
 				<input type="text" name="precio_venta" required="required" 
