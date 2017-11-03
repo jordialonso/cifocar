@@ -182,7 +182,7 @@ nav ul.menu>li:hover{
 	margin-top: 5px;
 	padding: 4px;
 }
-#content form label{
+#content form label, #content label{
 	display: inline-block;
 	min-width: 140px;
 }
@@ -204,6 +204,7 @@ footer{
 	background-repeat: no-repeat;
 	background-size: 40%;
 	background-position: right top;
+	text-align:center;
 }
 
 footer a:hover{
@@ -226,7 +227,7 @@ footer a:hover{
 	width: 800px;
 }
 
-.imagen{
+.imagenGrande{
 	position: fixed;
 	width: 60%;
 	height: 60%;
@@ -241,4 +242,13 @@ footer a:hover{
 	width: 25px;
 	height: 25px;	
 	cursor:pointer;
+}
+
+input[type="submit"], select {
+	background-color: black;
+	color: white;
+	font-weight: bold;
+}	
+input[type="submit"] {
+	border-radius: 15px;
 }	

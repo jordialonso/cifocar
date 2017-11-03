@@ -25,7 +25,7 @@
 		
 			<form method="post" autocomplete="off">
 				<label>User:</label>
-				<input type="text" readonly="readonly" value="<?php echo $usuario->user;?>" /><br/>
+				<input type="text" readonly="readonly" value="<?php echo $usuarioBorrar->id;?>" /><br/>
 				
 				<label>Password:</label>
 				<input type="password" name="password" required="required"/><br/>

@@ -60,7 +60,7 @@
 		public static function menu($usuario){ 
 		    ?>
 			<nav>
-				<?php if ($usuario->privilegio==1){?>
+				<?php if ($usuario && $usuario->privilegio==1){?>
 				<ul class="menu">
 					<li><a href="index.php">Inicio</a></li>
 					<li><a href="index.php?controlador=Vehiculo&operacion=nuevo">Nuevo Vehículo</a></li>
@@ -69,7 +69,7 @@
 					<li><a href="index.php?controlador=Marca&operacion=listar">Listar marca</a></li>
 				</ul>
 				<?php } ?>
-				<?php if ($usuario->privilegio==2){?>
+				<?php if ($usuario && $usuario->privilegio==2){?>
 				<ul class="menu">
 					<li><a href="index.php?controlador=Vehiculo&operacion=listar">Listar Vehículo</a></li>
 				</ul>
@@ -78,6 +78,7 @@
 				<ul class="menu">
 					<li><a href="index.php?controlador=Vehiculo&operacion=listar">Listar Vehículo</a></li>
 					<li><a href="index.php?controlador=Usuario&operacion=registro">Registro</a></li>
+					<li><a href="index.php?controlador=Usuario&operacion=listar">Listar Usuarios</a></li>
 				</ul>
 				<?php } ?>
 			</nav>
@@ -86,16 +87,8 @@
 		//PONE EL PIE DE PAGINA
 		public static function footer(){	?>
 			<footer>
-				<p>
-					<a href="http://recursos.robertsallent.com/mvc/robs_micro_fw_1.0.zip">
-						RobS micro Framework</a> - solo para fines docentes
-				</p>
 				<p> 
-					<a rel="author" href="http://www.robertsallent.com">Robert Sallent</a>
-					<a href="http://www.twitter.com/robertsallent">
-         				<img class="logo" alt="twitter logo" src="images/logos/twitter.png" />
-					</a> -  
-					<a href="https://www.facebook.com/cifovalles">CIFO del Vallès'16</a>. 
+					<a href="https://www.facebook.com/cifovalles">CIFO del Vallès 2017</a>. 
          		</p>
 			</footer>
 		<?php }

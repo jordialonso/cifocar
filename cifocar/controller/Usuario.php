@@ -56,7 +56,7 @@
 		
 
 		//PROCEDIMIENTO PARA MODIFICAR UN USUARIO
-		public function modificacion(){
+		public function modificacion($id){
 			//si no hay usuario identificado... error
 			if(!Login::getUsuario())
 				throw new Exception('Debes estar identificado para poder modificar tus datos');
@@ -68,27 +68,39 @@
 				$datos = array();
 				$datos['usuario'] = Login::getUsuario();
 				$datos['max_image_size'] = Config::get()->user_image_max_size;
-				$this->load_view('view/usuarios/modificacion.php', $datos);
-					
-				//si llegan los datos por POST
+				$datos['usuarioModificar']=NULL;
+				if($id){
+				    $this->load('model/UsuarioModel.php');
+				    $usuarioModificar = UsuarioModel::getUsuario($id);
+				    $datos['usuarioModificar'] = $usuarioModificar;
+				    $this->load_view('view/usuarios/modificacion_admin.php', $datos);
+				}else{    
+				    $this->load_view('view/usuarios/modificacion.php', $datos);
+			    }	
+			//si llegan los datos por POST
 			}else{
 				//recuperar los datos actuales del usuario
 				$u = Login::getUsuario();
 				$conexion = Database::get();
 				
-				//comprueba que el usuario se valide correctamente
-				$p = MD5($conexion->real_escape_string($_POST['password']));
-				if($u->password != $p)
-					throw new Exception('El password no coincide, no se puede procesar la modificación');
-								
-				//recupera el nuevo password (si se desea cambiar)
-				if(!empty($_POST['newpassword']))
-					$u->password = MD5($conexion->real_escape_string($_POST['newpassword']));
-				
-				//recupera el nuevo nombre y el nuevo email
-				$u->nombre = $conexion->real_escape_string($_POST['nombre']);
-				$u->email = $conexion->real_escape_string($_POST['email']);
-						
+				if(!$id){
+        			//comprueba que el usuario se valide correctamente
+        			$p = MD5($conexion->real_escape_string($_POST['password']));
+        			if($u->password != $p)
+        				throw new Exception('El password no coincide, no se puede procesar la modificación');
+        							
+        			//recupera el nuevo password (si se desea cambiar)
+        			if(!empty($_POST['newpassword']))
+        				$u->password = MD5($conexion->real_escape_string($_POST['newpassword']));
+        		}
+        		
+        		if(!$id){
+    				//recupera el nuevo nombre y el nuevo email
+    				$u->nombre = $conexion->real_escape_string($_POST['nombre']);
+    				$u->email = $conexion->real_escape_string($_POST['email']);
+        		}else{
+        		    
+        		}		
 				//TRATAMIENTO DE LA NUEVA IMAGEN DE PERFIL (si se indicó)
 				if($_FILES['imagen']['error']!=4){
 					//el directorio y el tam_maximo se configuran en el fichero config.php
@@ -130,45 +142,44 @@
 		
 		//PROCEDIMIENTO PARA DAR DE BAJA UN USUARIO
 		//solicita confirmación
-		public function baja(){		
+		public function baja($id){		
 			//recuperar usuario
 			$u = Login::getUsuario();
 			
 			//asegurarse que el usuario está identificado
 			if(!$u) throw new Exception('Debes estar identificado para poder darte de baja');
 			
-			//si no nos están enviando la conformación de baja
-			if(empty($_POST['confirmar'])){	
-				//carga el formulario de confirmación
-				$datos = array();
-				$datos['usuario'] = $u;
-				$this->load_view('view/usuarios/baja.php', $datos);
-		
-			//si nos están enviando la confirmación de baja
-			}else{
-				//validar password
-				$p = MD5(Database::get()->real_escape_string($_POST['password']));
-				if($u->password != $p) 
-					throw new Exception('El password no coincide, no se puede procesar la baja');
-				
-				//de borrar el usuario actual en la BDD
-				if(!$u->borrar())
-					throw new Exception('No se pudo dar de baja');
-						
-				//borra la imagen (solamente en caso que no sea imagen por defecto)
-				if($u->imagen!=Config::get()->default_user_image)
-					@unlink($u->imagen); 
+			$this->load('model/UsuarioModel.php');
+			//$usuarioBorrar = UsuarioModel::getUsuario($id);
 			
-				//cierra la sesion
-				Login::log_out();
+			//de borrar el usuario actual en la BDD
+			if(!UsuarioModel::borrar($id))
+				throw new Exception('No se pudo dar de baja. Puede ser que tenga un vehículo asignado.');
 					
-				//mostrar la vista de éxito
-				$datos = array();
-				$datos['usuario'] = null;
-				$datos['mensaje'] = 'Eliminado OK';
-				$this->load_view('view/exito.php', $datos);
-			}
+			//borra la imagen (solamente en caso que no sea imagen por defecto)
+			if($u->imagen!=Config::get()->default_user_image)
+				@unlink($u->imagen); 
+				
+			//mostrar la vista de éxito
+			$datos = array();
+			$datos['usuario'] = $u;
+			$datos['mensaje'] = 'Eliminado OK';
+			$this->load_view('view/exito.php', $datos);
+			
 		}
-		
+		public function listar(){
+		    
+		    $this->load('model/UsuarioModel.php');
+		    $usuarios = UsuarioModel::getUsuarios();
+		    
+		    if(!$usuarios)
+		        throw new Exception('No hay usuarios');
+		        
+		        $datos = array();
+		        $datos['usuario'] = Login::getUsuario();
+		        $datos['usuarios'] = $usuarios;
+		        
+		        $this->load_view('view/usuarios/lista.php', $datos);
+		}
 	}
 ?>

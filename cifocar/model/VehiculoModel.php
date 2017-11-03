@@ -43,14 +43,13 @@ class VehiculoModel{
         return Database::get()->query($consulta);
     }
     
-    public static function getVehiculos($l=0, $o=0, $texto='', $sentido='ASC'){
+    public static function getVehiculos($l=0, $o=0, $campo='id' ,$texto='', $campoOrden='id' ,$sentido='ASC'){
         $vehiculo_table = Config::get()->db_vehiculo_table;
         $consulta = "SELECT * FROM $vehiculo_table
-		                 WHERE id LIKE '%$texto%'
-                         ORDER BY id $sentido";
+		                 WHERE $campo LIKE '%$texto%'
+                         ORDER BY $campoOrden $sentido";
         if($l>0)$consulta .= " LIMIT $l";
         if($o>0)$consulta .= " OFFSET $o";
-        
         
         $resultado = Database::get()->query($consulta);
         
@@ -79,5 +78,17 @@ class VehiculoModel{
         
         return $vehiculo;
     }  
+    
+    public static function getTotal($t='', $c='id'){
+        $consulta = "SELECT * FROM vehiculos
+                         WHERE $c LIKE '%$t%'";
+        
+        $conexion = Database::get();
+        $resultados = $conexion->query($consulta);
+        $total = $resultados->num_rows;
+        $resultados->free();
+        return $total;
+    }
+    
 }
 ?>

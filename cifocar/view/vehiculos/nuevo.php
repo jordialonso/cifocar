@@ -52,7 +52,13 @@
 				<input type="text" name="caballos" required="required"/><br/>
 				
 				<label>Estado:</label>
-				<input type="text" name="estado" required="required"/><br/>
+				<select name="estado">
+					<option value="0">En venda</option>
+					<option value="1">Reservado</option>
+					<option value="2">Vendido</option>
+					<option value="3">Devolución</option>
+					<option value="4">Baja</option>
+				</select><br/>
 				
 				<label>Año matriculación:</label>
 				<input type="text" name="any_matriculacion" required="required"/><br/>

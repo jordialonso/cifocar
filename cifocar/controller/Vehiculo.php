@@ -69,6 +69,22 @@ class Vehiculo extends Controller{
         }
     }
     
+    public function ver($id=0){
+        
+        if(!$id)
+            throw new Exception('No se ha indicado la ID del vehículo');
+            
+            $this->load('model/VehiculoModel.php');
+            $vehiculo = VehiculoModel::getVehiculo($id);
+            
+            if(!$vehiculo)
+                throw new Exception('No existe el vehículo seleccionado');
+                
+                $datos = array();
+                $datos['usuario'] = login::getUsuario();
+                $datos['vehiculo'] = $vehiculo;
+                $this->load_view('view/vehiculos/detalles.php', $datos);
+    }
     
     //PROCEDIMIENTO PARA MODIFICAR UN USUARIO
     public function editar($id){
@@ -183,22 +199,67 @@ class Vehiculo extends Controller{
         }
     }
     
-    public function listar(){
+    public function listar($pagina){
         
         // if(!Login::getUsuario())
         //     throw new Exception('Debes estar identificado.');
         
+        //si me piden APLICAR un filtro
+        if(!empty($_POST['filtrar'])){
+            //recupera el filtro a aplicar
+            $f = new stdClass(); //filtro
+            $f->texto = htmlspecialchars($_POST['texto']);
+            $f->campo = htmlspecialchars($_POST['campo']);
+            $f->campoOrden = htmlspecialchars($_POST['campoOrden']);
+            $f->sentidoOrden = htmlspecialchars($_POST['sentidoOrden']);
+            
+            //guarda el filtro en un var de sesión
+            $_SESSION['filtroRecetas'] = serialize($f);
+        }
+        
+        //si me piden QUITAR un filtro
+        if(!empty($_POST['treureFiltre']))
+            unset($_SESSION['filtroRecetas']);
+            
+            
+        //comprobar si hay filtro
+        $filtro = empty($_SESSION['filtroRecetas'])? false : unserialize($_SESSION['filtroRecetas']);
+        
+        //para la paginación
+        $num = 5; //numero de resultados por página
+        $pagina = abs(intval($pagina)); //para evitar cosas raras por url
+        $pagina = empty($pagina)? 1 : $pagina; //página a mostrar
+        $offset = $num*($pagina-1); //offset
+        
         $this->load('model/VehiculoModel.php');
-        $vehiculos = VehiculoModel::getVehiculos();
+        
+        if(!$filtro){
+            $vehiculos = VehiculoModel::getVehiculos($num, $offset);
+            //total de registros (para paginación)
+            $totalRegistros = VehiculoModel::getTotal();
+            
+        }else{
+            //recupera las recetas con el filtro aplicado
+            $vehiculos = VehiculoModel::getVehiculos($num, $offset, $filtro->campo, $filtro->texto, $filtro->campoOrden, $filtro->sentidoOrden);
+            //total de registros (para paginación)
+            $totalRegistros = VehiculoModel::getTotal($filtro->texto, $filtro->campo);
+            
+        }   
         
         if(!$vehiculos)
             throw new Exception('No hay vehículos');
             
-            $datos = array();
-            $datos['usuario'] = login::getUsuario();
-            $datos['vehiculos'] = $vehiculos;
-            
-            $this->load_view('view/vehiculos/lista.php', $datos);
+        $datos = array();
+        $datos['usuario'] = login::getUsuario();
+        $datos['vehiculos'] = $vehiculos;
+        $datos['filtro'] = $filtro;
+        $datos['paginaActual'] = $pagina;
+        $datos['paginas'] = ceil($totalRegistros/$num); //total de páginas (para paginación)
+        $datos['totalRegistros'] = $totalRegistros;
+        $datos['regPorPagina'] = $num;
+        
+        
+        $this->load_view('view/vehiculos/lista.php', $datos);
     }
     
 }

@@ -20,10 +20,6 @@
 		?>
 		
 		<section id="content">
-			<a class="derecha" href="index.php?controlador=Usuario&operacion=baja">
-				<img src="images/buttons/delete.png" alt="darse de baja" class="logo" />
-				Darse de baja
-			</a>
 			
 			<h2>Formulario de modificación de datos</h2>
 			
@@ -31,13 +27,12 @@
 				
 				<figure>
 					<img class="imagenactual" src="<?php echo $usuario->imagen;?>" 
-						alt="<?php echo  $usuario->user;?>" />
+						alt="<?php echo $usuario->user;?>" />
 				</figure>
-				
 				
 				<label>User:</label>
 				<input type="text" name="user" required="required" 
-					readonly="readonly" value="<?php echo $usuario->user;?>" /><br/>
+					readonly="readonly" value="<?php echo $usuario->user; ?>" /><br/>
 				
 				<label>Password actual:</label>
 				<input type="password" name="password" required="required" /><br/>

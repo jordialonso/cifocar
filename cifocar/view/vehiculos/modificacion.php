@@ -38,7 +38,7 @@
 					    if ($marca->marca != $vehiculo->marca) 
 					       echo "<option value='<?php echo $marca->marca; ?>' >$marca->marca</option>";
 					    else
-					        echo "<option value='<?php echo $marca->marca; ?>' selected='selected'>$marca->marca</option>";
+					       echo "<option value='<?php echo $marca->marca; ?>' selected='selected'>$marca->marca</option>";
 					}
 				?>	 
 				</select><br/>
@@ -68,8 +68,25 @@
 					value="<?php echo $vehiculo->caballos;?>" /><br/>
 				
 				<label>Estado:</label>
-				<input type="text" name="estado" required="required" 
-					value="<?php echo $vehiculo->estado;?>" /><br/>
+				<?php 
+				if($usuario && $usuario->privilegio!=2){ 
+				    switch($vehiculo->estado){
+				        case 0: echo 'En venda';break;
+				        case 1: echo 'Reservado';break;
+				        case 2: echo 'Vendido';break;
+				        case 3: echo 'Devolución';break;
+				        case 4: echo 'Baja';break;
+				    }
+				}else{ ?>
+				<select name="estado">
+				  	<option value="0" <?php if($vehiculo->estado==0) echo 'selected="selected"'; ?>>En venda</option>
+					<option value="1" <?php if($vehiculo->estado==1) echo 'selected="selected"'; ?>>Reservado</option>
+					<option value="2" <?php if($vehiculo->estado==2) echo 'selected="selected"'; ?>>Vendido</option>
+					<option value="3" <?php if($vehiculo->estado==3) echo 'selected="selected"'; ?>>Devolución</option>
+					<option value="4" <?php if($vehiculo->estado==4) echo 'selected="selected"'; ?>>Baja</option>
+				</select>
+				<?php } ?>
+				<br/>
 				
 				<label>Año matriculación:</label>
 				<input type="text" name="any_matriculacion" required="required" 

@@ -30,9 +30,9 @@
 		
 		
 		//elimina el usuario de la BDD
-		public function borrar(){
+		public static function borrar($id){
 			$user_table = Config::get()->db_user_table;
-			$consulta = "DELETE FROM $user_table WHERE user='$this->user';";
+			$consulta = "DELETE FROM $user_table WHERE id='$id';";
 			return Database::get()->query($consulta);
 		}
 		
@@ -61,6 +61,21 @@
 			$resultado->free();
 			
 			return $us;
+		}	
+		
+		public static function getUsuarios(){
+		    $user_table = Config::get()->db_user_table;
+		    $consulta = "SELECT * FROM $user_table;";
+		    $resultado = Database::get()->query($consulta);
+		    
+		    $lista=array();
+		    
+		    while($usuario = $resultado->fetch_object('UsuarioModel'))
+		        $lista[]=$usuario;
+		    
+		    $resultado->free();
+		    
+		    return $lista;
 		}	
 	}
 ?>
