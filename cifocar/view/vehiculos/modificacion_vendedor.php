@@ -32,76 +32,41 @@
 				<input type="hidden" name="id" value="<?php echo $vehiculo->id;?>" />
 				
 				<label>Marca:</label>
-				<select name="marca"> 
-				<?php       
-					foreach($marcas as $marca){
-					    if ($marca->marca != $vehiculo->marca) 
-					       echo "<option value='<?php echo $marca->marca; ?>' >$marca->marca</option>";
-					    else
-					       echo "<option value='<?php echo $marca->marca; ?>' selected='selected'>$marca->marca</option>";
-					}
-				?>	 
-				</select><br/>
+				<?php echo $vehiculo->marca; ?><br/>	
 				
 				<label>Matricula:</label>
-				<input type="text" name="matricula" required="required" 
-					value="<?php echo $vehiculo->matricula;?>" /><br/>	
+				<?php echo $vehiculo->matricula; ?><br/>	
 				
 				<label>Modelo:</label>
-				<input type="text" name="modelo" required="required" 
-					value="<?php echo $vehiculo->modelo;?>" /><br/>
+				<?php echo $vehiculo->modelo; ?><br/>
 					
 				<label>Color:</label>
-				<input type="text" name="color" required="required" 
-					value="<?php echo $vehiculo->color;?>" /><br/>	
+				<?php echo $vehiculo->color; ?><br/>	
 				
 				<label>Precio venta:</label>
-				<input type="text" name="precio_venta" required="required" 
-					value="<?php echo $vehiculo->precio_venta;?>"/><br/>
+				<?php echo $vehiculo->precio_venta;?><br/>
 				
 				<label>Kms:</label>
-				<input type="text" name="kms" required="required" 
-					value="<?php echo $vehiculo->kms;?>"/><br/>
+				<?php echo $vehiculo->kms;?><br/>
 				
-				<label>Caballos:</label>
-				<input type="text" name="caballos" required="required" 
-					value="<?php echo $vehiculo->caballos;?>" /><br/>
+				<label>Caballos:</label> 
+				<?php echo $vehiculo->caballos;?><br/>
 				
 				<label>Estado:</label>
-				<?php 
-				if($usuario && $usuario->privilegio!=2){ 
-				    switch($vehiculo->estado){
-				        case 0: echo 'En venda';break;
-				        case 1: echo 'Reservado';break;
-				        case 2: echo 'Vendido';break;
-				        case 3: echo 'Devolución';break;
-				        case 4: echo 'Baja';break;
-				    }
-				}else{ ?>
 				<select name="estado">
 				  	<option value="0" <?php if($vehiculo->estado==0) echo 'selected="selected"'; ?>>En venda</option>
 					<option value="1" <?php if($vehiculo->estado==1) echo 'selected="selected"'; ?>>Reservado</option>
 					<option value="2" <?php if($vehiculo->estado==2) echo 'selected="selected"'; ?>>Vendido</option>
 					<option value="3" <?php if($vehiculo->estado==3) echo 'selected="selected"'; ?>>Devolución</option>
 					<option value="4" <?php if($vehiculo->estado==4) echo 'selected="selected"'; ?>>Baja</option>
-				</select>
-				<?php } ?>
-				<br/>
+				</select><br/>
 				
 				<label>Año matriculación:</label>
-				<input type="text" name="any_matriculacion" required="required" 
-					value="<?php echo $vehiculo->any_matriculacion;?>" /><br/>
+				<?php echo $vehiculo->any_matriculacion;?><br/>
 				
 				<label>Detalles:</label>
-				<input type="text" name="detalles" required="required" 
-					value="<?php echo $vehiculo->detalles;?>" /><br/>
+				<?php echo $vehiculo->detalles;?><br/>
 				
-				<label>Nueva imagen:</label>
-				<input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $max_image_size;?>" />		
-				<input type="file" accept="image/*" name="imagen" />
-				<span class="mini">max <?php echo intval($max_image_size/1024);?>kb</span><br />
-				
-				<label></label>
 				<input type="submit" name="modificar" value="Modificar"/><br/>
 			</form>
 			

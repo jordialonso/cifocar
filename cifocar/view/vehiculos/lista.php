@@ -97,7 +97,15 @@ foreach($vehiculos as $vehiculo){
 	<td><?php echo $vehiculo->precio_venta; ?></td>
 	<td><?php echo $vehiculo->kms; ?></td>
 	<td><?php echo $vehiculo->caballos; ?></td>
-	<td><?php echo $vehiculo->estado; ?></td>
+	<td><?php  
+	switch($vehiculo->estado){
+				        case 0: echo 'En venda';break;
+				        case 1: echo 'Reservado';break;
+				        case 2: echo 'Vendido';break;
+				        case 3: echo 'Devolución';break;
+				        case 4: echo 'Baja';break;
+	}			    
+	?></td>
 	<td><?php echo $vehiculo->any_matriculacion; ?></td>
 	
 <?php

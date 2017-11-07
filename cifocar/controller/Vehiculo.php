@@ -91,6 +91,8 @@ class Vehiculo extends Controller{
         //si no hay usuario identificado... error
         //if(!Login::getUsuario())
         //    throw new Exception('Debes estar identificado.');
+        $usuario = Login::getUsuario();
+        
         $this->load('model/VehiculoModel.php');
         $vehiculo = VehiculoModel::getVehiculo($id);
         
@@ -99,7 +101,7 @@ class Vehiculo extends Controller{
             
             //mostramos la vista del formulario
             $datos = array();
-            $datos['usuario'] = Login::getUsuario();
+            $datos['usuario'] = $usuario;
             $datos['vehiculo'] = $vehiculo;
             $datos['max_image_size'] = Config::get()->image_max_size;
             
@@ -108,58 +110,68 @@ class Vehiculo extends Controller{
             $marcas = MarcaModel::getMarcas();
             $datos['marcas']=$marcas;
             
-            $this->load_view('view/vehiculos/modificacion.php', $datos);
+            if($usuario && $usuario->privilegio!=2)
+                $this->load_view('view/vehiculos/modificacion.php', $datos);
+            else
+                $this->load_view('view/vehiculos/modificacion_vendedor.php', $datos);
             
             //si llegan los datos por POST
         }else{
-    
             $vehiculo = new VehiculoModel();
             $conexion = Database::get();
+           
             $vehiculo->id = $conexion->real_escape_string($_POST['id']);
-            $vehiculo->matricula = $conexion->real_escape_string($_POST['matricula']);
-            echo 'Matricula después: '.$vehiculo->matricula;
-            $vehiculo->modelo = $conexion->real_escape_string($_POST['modelo']);
-            $vehiculo->color = $conexion->real_escape_string($_POST['color']);
-            $vehiculo->precio_venta = $conexion->real_escape_string($_POST['precio_venta']);
-            $vehiculo->kms = $conexion->real_escape_string($_POST['kms']);
-            $vehiculo->caballos = $conexion->real_escape_string($_POST['caballos']);
-            $vehiculo->estado = $conexion->real_escape_string($_POST['estado']);
-            $vehiculo->any_matriculacion = $conexion->real_escape_string($_POST['any_matriculacion']);
-            $vehiculo->detalles = $conexion->real_escape_string($_POST['detalles']);
-            $vehiculo->imagen = Config::get()->default_vehiculo_image;
-            //$vehiculo->vendedor = $conexion->real_escape_string($_POST['vendedor']);
-            $vehiculo->marca = $conexion->real_escape_string($_POST['marca']);
+            $vehiculo->estado = intval($conexion->real_escape_string($_POST['estado']));
             
-            //TRATAMIENTO DE LA NUEVA IMAGEN DE PERFIL (si se indicó)
-            if($_FILES['imagen']['error']!=4){
-                //el directorio y el tam_maximo se configuran en el fichero config.php
-                $dir = Config::get()->vehiculo_image_directory;
-                $tam = Config::get()->image_max_size;
-                
-                //prepara la carga de nueva imagen
-                $upload = new Upload($_FILES['imagen'], $dir, $tam);
-                
-                //guarda la imagen antigua en una var para borrarla
-                //después si todo ha funcionado correctamente
-                $old_img = $vehiculo->imagen;
-                
-                //sube la nueva imagen
-                $vehiculo->imagen = $upload->upload_image();
+            if($usuario && $usuario->privilegio!=2){
+                $vehiculo->matricula = $conexion->real_escape_string($_POST['matricula']);
+                $vehiculo->modelo = $conexion->real_escape_string($_POST['modelo']);
+                $vehiculo->color = $conexion->real_escape_string($_POST['color']);
+                $vehiculo->precio_venta = $conexion->real_escape_string($_POST['precio_venta']);
+                $vehiculo->kms = $conexion->real_escape_string($_POST['kms']);
+                $vehiculo->caballos = $conexion->real_escape_string($_POST['caballos']);
+                $vehiculo->any_matriculacion = $conexion->real_escape_string($_POST['any_matriculacion']);
+                $vehiculo->detalles = $conexion->real_escape_string($_POST['detalles']);
+                $vehiculo->imagen = $conexion->real_escape_string($_POST['imagen']);
+                $vehiculo->marca = $conexion->real_escape_string($_POST['marca']);
+            
+            
+                //TRATAMIENTO DE LA NUEVA IMAGEN DE PERFIL (si se indicó)
+                if($_FILES['imagen']['error']!=4){
+                    //el directorio y el tam_maximo se configuran en el fichero config.php
+                    $dir = Config::get()->vehiculo_image_directory;
+                    $tam = Config::get()->image_max_size;
+                    
+                    //prepara la carga de nueva imagen
+                    $upload = new Upload($_FILES['imagen'], $dir, $tam);
+                    
+                    //guarda la imagen antigua en una var para borrarla
+                    //después si todo ha funcionado correctamente
+                    $old_img = $vehiculo->imagen;
+                    
+                    //sube la nueva imagen
+                    $vehiculo->imagen = $upload->upload_image();
+                }
             }
             
-            //modificar el usuario en BDD
-            if(!$vehiculo->actualizar())
-                throw new Exception('No se pudo modificar');
-                        
-            //borrado de la imagen antigua (si se cambió)
-            //hay que evitar que se borre la imagen por defecto
-            if(!empty($old_img) && $old_img!= Config::get()->default_vehiculo_image)
-                @unlink($old_img);
-                
+            if($usuario && $usuario->privilegio!=2){
+                if(!$vehiculo->actualizar())
+                    throw new Exception('No se pudo modificar');
+            }else{    
+                if(!$vehiculo->actualizarVendedor())
+                    throw new Exception('No se pudo modificar');
+            }
+             
+            if($usuario && $usuario->privilegio!=2){
+                //borrado de la imagen antigua (si se cambió)
+                //hay que evitar que se borre la imagen por defecto
+                if(!empty($old_img) && $old_img!= Config::get()->default_vehiculo_image)
+                    @unlink($old_img);    
+            }    
                                              
             //mostrar la vista de éxito
             $datos = array();
-            $datos['usuario'] = Login::getUsuario();
+            $datos['usuario'] = $usuario;
             $datos['mensaje'] = 'Modificación OK';
             $this->load_view('view/exito.php', $datos);
         }

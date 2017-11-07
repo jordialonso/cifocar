@@ -28,6 +28,7 @@
 			<h2>Formulario de modificación de datos</h2>
 			
 			<form method="post" enctype="multipart/form-data" autocomplete="off">
+				<input type="hidden" name="imagen" value="<?php echo $usuarioModificar->imagen;?>" />
 				
 				<figure>
 					<img class="imagenactual" src="<?php echo $usuarioModificar->imagen; ?>" 
@@ -52,7 +53,7 @@
 				<span class="mini">max <?php echo intval($max_image_size/1024);?>kb</span><br />
 				
 				<label></label>
-				<input type="submit" name="modificar" value="modificar"/><br/>
+				<input type="submit" name="modificar" value="Modificar"/><br/>
 			</form>
 			
 				

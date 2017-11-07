@@ -35,6 +35,14 @@ class VehiculoModel{
         return Database::get()->query($consulta);
     }
     
+    public function actualizarVendedor(){
+        $vehiculo_table = Config::get()->db_vehiculo_table;
+        $consulta = "UPDATE $vehiculo_table
+							  SET   estado=$this->estado
+							  WHERE id='$this->id';";
+        return Database::get()->query($consulta);
+    }
+    
     
     //elimina el usuario de la BDD
     public function borrar(){

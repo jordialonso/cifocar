@@ -24,7 +24,8 @@
 			<h2>Formulario de modificación de datos</h2>
 			
 			<form method="post" enctype="multipart/form-data" autocomplete="off">
-				
+			
+				<input type="hidden" name="imagen" value="<?php echo $usuario->imagen;?>" />
 				<figure>
 					<img class="imagenactual" src="<?php echo $usuario->imagen;?>" 
 						alt="<?php echo $usuario->user;?>" />

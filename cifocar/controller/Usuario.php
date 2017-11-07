@@ -56,11 +56,18 @@
 		
 
 		//PROCEDIMIENTO PARA MODIFICAR UN USUARIO
-		public function modificacion($id){
+		public function modificacion($user){
 			//si no hay usuario identificado... error
-			if(!Login::getUsuario())
-				throw new Exception('Debes estar identificado para poder modificar tus datos');
-				
+			if(!$user){
+    			if(!Login::getUsuario())
+    				throw new Exception('Debes estar identificado para poder modificar tus datos');
+    		}else{
+    		    $u = Login::getUsuario();
+    		    if ($u && $u->privilegio!=0)
+    		        throw new Exception('Debes ser administrador');
+    		}
+			$this->load('model/UsuarioModel.php');
+			$usuarioModificar = UsuarioModel::getUsuario($user);
 			//si no llegan los datos a modificar
 			if(empty($_POST['modificar'])){
 				
@@ -69,9 +76,9 @@
 				$datos['usuario'] = Login::getUsuario();
 				$datos['max_image_size'] = Config::get()->user_image_max_size;
 				$datos['usuarioModificar']=NULL;
-				if($id){
-				    $this->load('model/UsuarioModel.php');
-				    $usuarioModificar = UsuarioModel::getUsuario($id);
+				if($user){
+				    //$this->load('model/UsuarioModel.php');
+				    //$usuarioModificar = UsuarioModel::getUsuario($user);
 				    $datos['usuarioModificar'] = $usuarioModificar;
 				    $this->load_view('view/usuarios/modificacion_admin.php', $datos);
 				}else{    
@@ -83,7 +90,7 @@
 				$u = Login::getUsuario();
 				$conexion = Database::get();
 				
-				if(!$id){
+				if(!$user){
         			//comprueba que el usuario se valide correctamente
         			$p = MD5($conexion->real_escape_string($_POST['password']));
         			if($u->password != $p)
@@ -94,13 +101,22 @@
         				$u->password = MD5($conexion->real_escape_string($_POST['newpassword']));
         		}
         		
-        		if(!$id){
-    				//recupera el nuevo nombre y el nuevo email
-    				$u->nombre = $conexion->real_escape_string($_POST['nombre']);
-    				$u->email = $conexion->real_escape_string($_POST['email']);
+        		
+        		if(!$user){
+        		    $u->user = $conexion->real_escape_string($_POST['user']);
+        		    $u->nombre = $conexion->real_escape_string($_POST['nombre']);
+        		    $u->email = $conexion->real_escape_string($_POST['email']);
+        		    $u->imagen = $conexion->real_escape_string($_POST['imagen']);
         		}else{
-        		    
-        		}		
+        		    $u1 = new UsuarioModel();
+        		    $conexion = Database::get();
+        		    $u1->password = $usuarioModificar->password;
+        		    $u1->user = $conexion->real_escape_string($_POST['user']);
+        		    $u1->nombre = $conexion->real_escape_string($_POST['nombre']);
+        		    $u1->email = $conexion->real_escape_string($_POST['email']);
+        		    $u1->imagen = $conexion->real_escape_string($_POST['imagen']);
+        		}
+        		
 				//TRATAMIENTO DE LA NUEVA IMAGEN DE PERFIL (si se indicó)
 				if($_FILES['imagen']['error']!=4){
 					//el directorio y el tam_maximo se configuran en el fichero config.php
@@ -112,25 +128,34 @@
 					
 					//guarda la imagen antigua en una var para borrarla 
 					//después si todo ha funcionado correctamente
-					$old_img = $u->imagen;
-					
-					//sube la nueva imagen
-					$u->imagen = $upload->upload_image();
+					if(!$user){
+					    $old_img = $u->imagen;
+    					//sube la nueva imagen
+    					$u->imagen = $upload->upload_image();
+					}else{
+					    $old_img = $u1->imagen;
+					    $u1->imagen = $upload->upload_image();
+					}	
 				}
-				
-				//modificar el usuario en BDD
-				if(!$u->actualizar())
-					throw new Exception('No se pudo modificar');
+				if(!$user){
+    				//modificar el usuario en BDD
+    				if(!$u->actualizar())
+    					throw new Exception('No se pudo modificar');
+				}else{
+				    if(!$u1->actualizar())
+				        throw new Exception('No se pudo modificar');
+				}	
 		
 				//borrado de la imagen antigua (si se cambió)
 				//hay que evitar que se borre la imagen por defecto
 				if(!empty($old_img) && $old_img!= Config::get()->default_user_image)
 					@unlink($old_img);
-						
-				//hace de nuevo "login" para actualizar los datos del usuario
-				//desde la BDD a la variable de sesión.
-				Login::log_in($u->user, $u->password);
-					
+				
+				if(!$user){	
+    				//hace de nuevo "login" para actualizar los datos del usuario
+    				//desde la BDD a la variable de sesión.
+    				Login::log_in($u->user, $u->password);
+				}	
 				//mostrar la vista de éxito
 				$datos = array();
 				$datos['usuario'] = Login::getUsuario();
@@ -146,8 +171,8 @@
 			//recuperar usuario
 			$u = Login::getUsuario();
 			
-			//asegurarse que el usuario está identificado
-			if(!$u) throw new Exception('Debes estar identificado para poder darte de baja');
+			if ($u && $u->privilegio!=0)
+			    throw new Exception('Debes ser administrador');
 			
 			$this->load('model/UsuarioModel.php');
 			//$usuarioBorrar = UsuarioModel::getUsuario($id);
@@ -169,6 +194,11 @@
 		}
 		public function listar(){
 		    
+		    $usuario=Login::getUsuario();
+		    
+		    if ($usuario && $usuario->privilegio!=0)
+		        throw new Exception('Debes ser administrador');
+		        
 		    $this->load('model/UsuarioModel.php');
 		    $usuarios = UsuarioModel::getUsuarios();
 		    

@@ -63,9 +63,8 @@ body{
 
 /* HEADER */
 header{
-	padding: 20px;
+	padding: 15px;
 	background-color: #eef;
-	color: white;
 	text-shadow: 1px 1px 3px #99a;
 }
 
@@ -74,7 +73,8 @@ header{
 }
 
 header h1{
-	font-size: 3vw;	
+	font-size: 5vw;	
+	text-align: center;
 }
 header h2{
 	font-size: 2vw;	
@@ -85,7 +85,7 @@ header figure{
 }
 
 header figure img{
-	width: 80%;
+	width: 100%;
 }
 
 header hgroup{
@@ -199,8 +199,6 @@ nav ul.menu>li:hover{
 footer{
 	padding: 20px;
 	background-color: #eef;
-	
-	background-image: url('../images/logos/wide.png');
 	background-repeat: no-repeat;
 	background-size: 40%;
 	background-position: right top;
